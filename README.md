@@ -1,6 +1,6 @@
 # AIVA Prompt Improver: Local-First AI Prompt Enhancement Dashboard
 
-![Dashboard Screenshot](1.png)
+![Dashboard Screenshot](11.png)
 
 ---
 
@@ -64,7 +64,7 @@ New_Chatbot/
 
 ## 🖼️ Dashboard Preview
 
-![Dashboard UI](1.png)
+![Dashboard UI](12.png)
 
 ---
 
