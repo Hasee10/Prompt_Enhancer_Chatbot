@@ -1,3 +1,7 @@
+Here's a slightly improved version of your README with clearer structure, smoother wording, and a touch of polish—without changing any of the image links or breaking formatting:
+
+---
+
 # AIVA Prompt Improver: Local-First AI Prompt Enhancement Dashboard
 
 ![Dashboard Screenshot](1.png)
@@ -6,57 +10,59 @@
 
 ## 🚀 Overview
 
-**AIVA Prompt Improver** is a privacy-first, local AI assistant that helps you rewrite and enhance your prompts for use with AI models. It runs entirely on your machine—no cloud, no external APIs—offering chat, prompt improvement, and a beautiful, modern UI.
+**AIVA Prompt Improver** is a privacy-first, local AI assistant designed to help you rewrite and refine prompts for AI models. It runs entirely on your machine—**no cloud, no external APIs**—delivering enhanced prompts through a sleek, modern interface.
 
 ---
 
 ## 🏗️ Architecture & Tech Stack
 
-- **Frontend:** React (Vite), Tailwind CSS
-- **Backend:** Node.js (Express)
-- **LLM Serving:** Ollama (TinyLlama, Phi-3)
-- **Storage:** Browser localStorage (sessions)
-- **No Cloud:** All processing is local
+* **Frontend:** React (Vite) + Tailwind CSS
+* **Backend:** Node.js (Express)
+* **LLM Serving:** Ollama (TinyLlama, Phi-3)
+* **Storage:** Browser `localStorage` (chat sessions)
+* **Privacy:** 100% local processing
 
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```
 New_Chatbot/
 ├── 1.png                # Dashboard screenshot
-├── backend/             # Node.js server (API)
-│   ├── index.js         # Express server
+├── backend/             # Node.js server
+│   ├── index.js         # Express backend
 │   ├── package.json     # Backend dependencies
-├── frontend/            # React app (UI)
-│   ├── index.html       # App entry
+├── frontend/            # React UI
+│   ├── index.html       # HTML entry point
 │   ├── package.json     # Frontend dependencies
 │   ├── tailwind.config.js # Custom theme
 │   ├── postcss.config.js  # Tailwind/PostCSS setup
 │   └── src/
-│       ├── App.jsx      # Main app logic
-│       ├── index.jsx    # React entry
+│       ├── App.jsx      # App logic
+│       ├── index.jsx    # React entry point
 │       ├── index.css    # Global styles
 │       └── components/  # UI components
-├── main_ideas.txt       # Project vision & notes
+├── main_ideas.txt       # Vision & design notes
 └── README.md            # This file
 ```
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
 ### Frontend (React + Tailwind)
-- **Modern UI:** Sidebar, chat thread, model switcher, input bar, context panel
-- **Chat History:** Persistent sessions, easy switching, delete & create new chats
-- **Model Switching:** Instantly toggle between TinyLlama and Phi-3
-- **Prompt Improvement:** Paste or type your prompt, and the bot will rewrite it for clarity, detail, and effectiveness
-- **Context Panel:** Quick tips for writing better prompts
-- **Responsive Design:** Works on desktop and tablets
 
-### Backend (Node.js/Express)
-- **/chat:** Forwards user prompt to Ollama with special instructions to improve the prompt, returns the improved prompt
-- **No Cloud:** All processing is local, no external API calls
+* **Modern UI:** Chat layout, sidebar navigation, model selector, and input bar
+* **Chat History:** Persistent sessions, switch between chats, create/delete easily
+* **Prompt Rewriting:** Improve clarity, structure, and depth of user prompts
+* **Model Switching:** Instantly toggle between TinyLlama and Phi-3
+* **Contextual Tips:** Prompt writing best practices in a collapsible context panel
+* **Responsive Layout:** Optimized for desktop and tablet screens
+
+### Backend (Node.js + Express)
+
+* **/chat Endpoint:** Sends prompts to Ollama with prompt-improvement instructions
+* **Local-Only:** No remote API calls or cloud processing
 
 ---
 
@@ -66,102 +72,116 @@ New_Chatbot/
 
 ---
 
-## 🛠️ Setup Instructions
+## 🛠️ Setup Guide
 
 ### 1. Prerequisites
-- **Node.js** (v16+ recommended)
-- **npm** (comes with Node.js)
-- **Ollama** (for local LLMs: https://ollama.com/)
+
+* [Node.js](https://nodejs.org/) (v16 or higher)
+* [npm](https://www.npmjs.com/) (comes with Node.js)
+* [Ollama](https://ollama.com/) (for local LLM serving)
 
 ### 2. Clone the Repository
+
 ```bash
 git clone <your-repo-url>
 cd New_Chatbot
 ```
 
-### 3. Backend Setup
+### 3. Start the Backend
+
 ```bash
 cd backend
 npm install
 node index.js
-# Backend runs on http://localhost:3001
+# Runs on http://localhost:3001
 ```
 
-### 4. Frontend Setup
+### 4. Start the Frontend
+
 ```bash
 cd ../frontend
 npm install
 npm run dev
-# Frontend runs on http://localhost:5173 (default Vite port)
+# Runs on http://localhost:5173
 ```
 
-### 5. Ollama Setup
-- Download and install Ollama from https://ollama.com/
-- Pull the required models:
+### 5. Set Up Ollama
+
+* Install from [Ollama.com](https://ollama.com/)
+* Pull required models:
+
 ```bash
 ollama pull tinyllama
 ollama pull phi3
 ollama run phi3
 ```
-- Ollama API runs on http://localhost:11434
+
+* Default API endpoint: `http://localhost:11434`
 
 ---
 
-## 🧑‍💻 Usage Guide
+## 🧑‍💻 Usage Instructions
 
-1. **Start Backend:** `node backend/index.js`
-2. **Start Ollama:** `ollama run phi3` (or tinyllama)
-3. **Start Frontend:** `npm run dev` in `frontend/`
-4. **Open in Browser:** [http://localhost:5173](http://localhost:5173)
-5. **Paste your prompt and get an improved version instantly!**
-
----
-
-## 🖌️ Design System
-- **Colors:** Deep green, olive, cream, peach, mint, pastel green
-- **Fonts:** Inter, Manrope (Google Fonts)
-- **Cards:** `rounded-2xl`, `shadow-lg`, `p-4`
-- **Buttons:** `rounded-2xl`, `hover:bg-green-700`, `transition`
-- **Typography:** `font-sans`, `text-lg`, `font-medium`
-- **Responsiveness:** `md:flex`, `w-full`, `max-w-4xl`, etc.
+1. Start the backend: `node backend/index.js`
+2. Launch Ollama: `ollama run phi3` (or any supported model)
+3. Run the frontend: `npm run dev` inside `frontend/`
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+5. Paste or write a prompt and get a refined version instantly
 
 ---
 
-## 🔒 Local-Only Guarantee
-- All chat and data processing is done **locally**
-- No cloud APIs, no data leaves your machine
-- Perfect for privacy-focused users and enterprise environments
+## 🎨 Design Language
+
+* **Palette:** Deep green, olive, mint, pastel green, peach, cream
+* **Typography:** Inter, Manrope (Google Fonts)
+* **Cards:** `rounded-2xl`, `shadow-lg`, `p-4`
+* **Buttons:** `rounded-2xl`, hover effects, transitions
+* **Responsive:** Flex and max-width utilities for smooth scaling
 
 ---
 
-## 🧩 Customization
-- **Add new models:** Edit `MODELS` in `App.jsx`
-- **Change theme:** Edit `tailwind.config.js`
-- **Add endpoints:** Extend `backend/index.js`
+## 🔒 100% Local Guarantee
+
+* All processing is done on-device
+* No cloud services, no data sent externally
+* Ideal for privacy-conscious users and secure environments
 
 ---
 
-## 🐞 Troubleshooting & FAQ
+## 🔧 Customization
 
-- **Ollama not running?**
-  - Make sure `ollama run <model>` is active and listening on port 11434
-- **Frontend/Backend connection issues?**
-  - Check CORS settings and port numbers
-- **Changed folder location?**
-  - Update any hardcoded paths if you moved the project (especially for LLM models)
+* **Add new models:** Modify the `MODELS` array in `App.jsx`
+* **Update theme/colors:** Edit `tailwind.config.js`
+* **Extend APIs:** Add new routes to `backend/index.js`
 
 ---
 
-## 🙏 Credits & Acknowledgments
-- **Ollama** for local LLM serving
-- **React** & **Tailwind CSS** for the beautiful UI
+## 🐞 Troubleshooting
+
+* **Ollama not responding?**
+  Ensure `ollama run <model>` is running and port 11434 is free.
+
+* **Frontend can't talk to backend?**
+  Check CORS headers and confirm both services are running on expected ports.
+
+* **Moved folders or changed structure?**
+  Update any hardcoded paths and recheck your config files.
 
 ---
 
-## 📄 Project Vision
+## 🙌 Credits
 
-See `main_ideas.txt` for the full vision, roadmap, and design philosophy behind AIVA Prompt Improver.
+* **Ollama** — For local model serving
+* **React + Tailwind** — For the flexible, beautiful UI
 
 ---
 
-**Enjoy your private, local-first AI prompt improvement dashboard!** 
+## 📄 Vision & Roadmap
+
+See `main_ideas.txt` for insights into the project's long-term goals and design thinking.
+
+---
+
+**Enjoy building with your fully local AI Prompt Improver!** 🔧💡
+
+Let me know if you want a minimal version, or one tailored for GitHub with badges and links.
