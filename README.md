@@ -1,7 +1,3 @@
-Here's a slightly improved version of your README with clearer structure, smoother wording, and a touch of polish—without changing any of the image links or breaking formatting:
-
----
-
 # AIVA Prompt Improver: Local-First AI Prompt Enhancement Dashboard
 
 ![Dashboard Screenshot](1.png)
