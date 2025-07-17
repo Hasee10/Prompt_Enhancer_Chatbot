@@ -8,7 +8,6 @@ import ContextPanel from './components/ContextPanel';
 const MODELS = [
   { key: 'tinyllama', label: 'TinyLlama' },
   { key: 'phi3', label: 'Phi-3' },
-  { key: 'imagebot', label: 'ImageBot' },
 ];
 
 const STORAGE_KEY = 'aiva_chatbot_sessions';
@@ -41,6 +40,8 @@ export default function App() {
     const loaded = loadSessions();
     return loaded.length > 0 ? loaded[0].id : null;
   });
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     saveSessions(sessions);
@@ -48,6 +49,11 @@ export default function App() {
 
   const currentSession = sessions.find(s => s.id === selectedChatId);
   const messages = currentSession ? currentSession.messages : [];
+
+  // Filter messages if search is active
+  const filteredMessages = searchQuery.trim()
+    ? messages.filter(m => m.text && m.text.toLowerCase().includes(searchQuery.toLowerCase()))
+    : messages;
 
   // Handle chat selection from sidebar
   const handleSelectChat = (chatId) => {
@@ -72,95 +78,41 @@ export default function App() {
   };
 
   // Handle sending a message and/or image
-  const handleSendMessage = async (text, imageFile) => {
-    if (!text.trim() && !imageFile) return;
-    let imageUrl = null;
-    if (imageFile) {
-      imageUrl = URL.createObjectURL(imageFile);
-    }
-    // Add user message only once
+  const handleSendMessage = async (text) => {
+    if (!text.trim()) return;
+    // Add user message
     setSessions(prev => prev.map(s =>
       s.id === selectedChatId
-        ? { ...s, messages: [...s.messages, { isBot: false, text, image: imageUrl }] }
+        ? { ...s, messages: [...s.messages, { isBot: false, text }] }
         : s
     ));
     // Add loading bot message
     setSessions(prev => prev.map(s =>
       s.id === selectedChatId
-        ? { ...s, messages: [...s.messages, { isBot: true, text: imageFile ? 'Analyzing image...' : 'Thinking...', loading: true }] }
+        ? { ...s, messages: [...s.messages, { isBot: true, text: 'Improving prompt...', loading: true }] }
         : s
     ));
     try {
-      let analysisSummary = '';
-      let summary = '';
-      if (imageFile) {
-        const formData = new FormData();
-        formData.append('image', imageFile);
-        const res = await fetch('http://localhost:3001/analyze-image', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
-        if (data.summary) summary = data.summary;
-        if (data.text) analysisSummary += `**Detected text:** ${data.text}\n`;
-        if (data.color) analysisSummary += `**Dominant color:** ${data.color}\n`;
-        if (data.shapes) analysisSummary += `**Shapes:** ${data.shapes}`;
-      }
-      if (imageFile && text.trim()) {
-        // Set chat title if empty
-        setSessions(prev => prev.map(s =>
-          s.id === selectedChatId && !s.title
-            ? { ...s, title: text.slice(0, 40) }
-            : s
-        ));
-        const prompt = `${text}\n\nImage analysis summary:\n${analysisSummary.trim()}`;
-        const res = await fetch('http://localhost:3001/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: prompt,
-            model: currentModel
-          })
-        });
-        const data = await res.json();
-        setSessions(prev => prev.map(s =>
-          s.id === selectedChatId
-            ? { ...s, messages: [...s.messages.slice(0, -1), { isBot: true, text: data.response, image: imageUrl }] }
-            : s
-        ));
-      } else if (imageFile) {
-        setSessions(prev => prev.map(s =>
-          s.id === selectedChatId && !s.title
-            ? { ...s, title: 'Image upload' }
-            : s
-        ));
-        setSessions(prev => prev.map(s =>
-          s.id === selectedChatId
-            ? { ...s, messages: [...s.messages.slice(0, -1), { isBot: true, text: summary || analysisSummary.trim(), image: imageUrl }] }
-            : s
-        ));
-      } else {
-        // Set chat title if empty
-        setSessions(prev => prev.map(s =>
-          s.id === selectedChatId && !s.title
-            ? { ...s, title: text.slice(0, 40) }
-            : s
-        ));
-        const res = await fetch('http://localhost:3001/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: text,
-            model: currentModel
-          })
-        });
-        const data = await res.json();
-        setSessions(prev => prev.map(s =>
-          s.id === selectedChatId
-            ? { ...s, messages: [...s.messages.slice(0, -1), { isBot: true, text: data.response }] }
-            : s
-        ));
-      }
+      // Set chat title if empty
+      setSessions(prev => prev.map(s =>
+        s.id === selectedChatId && !s.title
+          ? { ...s, title: text.slice(0, 40) }
+          : s
+      ));
+      const res = await fetch('http://localhost:3001/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          model: currentModel
+        })
+      });
+      const data = await res.json();
+      setSessions(prev => prev.map(s =>
+        s.id === selectedChatId
+          ? { ...s, messages: [...s.messages.slice(0, -1), { isBot: true, text: data.response }] }
+          : s
+      ));
     } catch (err) {
       setSessions(prev => prev.map(s =>
         s.id === selectedChatId
@@ -192,11 +144,18 @@ export default function App() {
         </div>
         {/* Chat Thread */}
         <div className="flex-1 overflow-y-auto px-6">
-          <ChatThread messages={messages} />
+          <ChatThread messages={filteredMessages} searchQuery={searchQuery} />
         </div>
         {/* Input Bar */}
         <div className="p-6">
-          <InputBar onSend={handleSendMessage} />
+          <InputBar
+            onSend={handleSendMessage}
+            onSearchOpen={() => setSearchOpen(true)}
+            searchOpen={searchOpen}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onSearchClose={() => { setSearchOpen(false); setSearchQuery(''); }}
+          />
         </div>
       </div>
       {/* Context Panel */}

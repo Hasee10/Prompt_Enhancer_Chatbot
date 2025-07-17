@@ -17,7 +17,6 @@ function renderMarkdown(text) {
 export default function MessageCard({
   isBot = false,
   text = '',
-  image = null,
   actions = [],
 }) {
   return (
@@ -28,9 +27,6 @@ export default function MessageCard({
         </div>
       )}
       <div className={`max-w-xl ${isBot ? 'bg-soft-orange border-l-4 border-peach text-deep-green' : 'bg-white border-l-4 border-mint text-deep-green'} rounded-2xl shadow-lg p-5 flex flex-col space-y-3`}>
-        {image && (
-          <img src={image} alt="uploaded" className="w-32 h-32 object-cover rounded-xl mb-2 border-2 border-mint" />
-        )}
         <div className="prose prose-sm max-w-none">
           {renderMarkdown(text)}
         </div>
