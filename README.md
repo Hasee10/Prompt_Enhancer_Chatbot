@@ -179,5 +179,3 @@ See `main_ideas.txt` for insights into the project's long-term goals and design 
 ---
 
 **Enjoy building with your fully local AI Prompt Improver!** 🔧💡
-
-Let me know if you want a minimal version, or one tailored for GitHub with badges and links.
